@@ -33,7 +33,7 @@ question_values = (
             (category, id, level, question, options, answer, explanation)
         )
 def upload_to_sql(i):
-    cur.execute("insert into people values (category, id, level, question, options, answer, explanation)",question_values)
+    cur.execute("insert into questions values (category, id, level, question, options, answer, explanation)",question_values)
 
 
 if __name__ == "__main__":
