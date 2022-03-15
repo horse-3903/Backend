@@ -29,9 +29,8 @@ def question():
         content = dict(request.form)
         print(content)
 
-        # raise error if keys not provided
-        if not dictContains(("category", "level", "question", "option1", "option2", "option3", "option4", "answer", "explanation"), content):
-            return "MISSING_VALUES"
+        # get post data
+        content = dict(request.form)
 
         # raise error if datas are of wrong type
         if not convertDictTypes((str, int, str, str, str, str, str, int, str), content):
