@@ -5,7 +5,7 @@ def dictContains(keys: tuple, check_dict: dict) -> bool:
             return False
     return True
 
-# Try to convert dict values to desired types. Returns true on success, false on failure.
+# Try to convert dict values to desired types.
 def convertDictTypes(types: tuple, res_dict: dict) -> bool:
     for index, key in enumerate(res_dict.keys()):
         try:
@@ -13,3 +13,11 @@ def convertDictTypes(types: tuple, res_dict: dict) -> bool:
         except (TypeError, ValueError):
             return False
     return True
+
+# Order a dictionary based on given key order.
+def orderDict(keys: tuple, res_dict: dict) -> None:
+    new_dict = {}
+    for key in keys:
+        new_dict[key] = res_dict[key]
+    res_dict.clear()
+    res_dict.update(new_dict)

@@ -1,0 +1,34 @@
+{
+    "QUESTION_ADD": {
+        "route": "/api/v1/questions",
+        "method": "POST",
+        "arguments": [
+            "category",
+            "level",
+            "question",
+            "option1", "option2", "option3", "option4",
+            "answer",
+            "explanation",
+            "id"
+        ]
+    },
+
+    "QUESTION_GET": {
+        "route": "/api/v1/questions",
+        "method": "GET",
+        "arguments": [
+            "mode", "num", "userid"
+        ]
+    },
+
+    "DEFINITION_ADD": {
+        "route": "/api/v1/definitions",
+        "method": "POST",
+        "arguments": [
+            "keyword", "aliases", "definition"
+        ]
+    },
+
+    "DEFINITION_GET": "NOT_IMPLEMENTED"
+
+}
