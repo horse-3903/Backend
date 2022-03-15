@@ -21,7 +21,7 @@ app = Flask(__name__)
 def home():
     return "<h1>hello, world!</h1>"
 
-@app.route("/api/add_question", methods = ["POST"])
+@app.route("/api/v1/add_question", methods = ["POST"])
 def add_question():
 
     # get post data
