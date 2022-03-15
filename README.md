@@ -1,6 +1,11 @@
-# Backend
+# Backend for Discord Bot
+
+## Backend
+
 Please install `Flask` by running `pip install flask` when running this locally.
 You can install [DB Browser](https://sqlitebrowser.org) to view the database.
 
-# Frontend developers
-API Routes can be accessed by sending a `GET` request to `api/v1/layout`. Alternatively, routes can be found in `src/layout.json`.
+## Frontend
+
+API Routes can be accessed by sending a `GET` request to `api/v1/layout`.
+Alternatively, routes can be found in `src/layout.json`.
