@@ -8,10 +8,17 @@ connection = sqlite3.connect("./src/database.db", check_same_thread = False)
 connection.set_trace_callback(None) # debugging, set to print if need to see queries executed, set to None if hide everything
 cur = connection.cursor()
 
-# create database table
+# create database tables
+
+# create question bank
 cur.execute('''
 CREATE TABLE IF NOT EXISTS questions(category TEXT NOT NULL, level INTEGER NOT NULL, question TEXT NOT NULL,
 option1 TEXT NOT NULL, option2 TEXT NOT NULL, option3 TEXT NOT NULL, option4 TEXT NOT NULL, answer INTEGER NOT NULL, explanation TEXT NOT NULL)
+''')
+
+# create definition bank
+cur.execute('''
+CREATE TABLE IF NOT EXISTS definitions(keyword TEXT NOT NULL, aliases TEXT NOT NULL, definition TEXT NOT NULL)
 ''')
 
 # Flask app
