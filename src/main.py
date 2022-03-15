@@ -26,7 +26,6 @@ def add_question():
 
     # get post data
     content = dict(request.form)
-    print(content)
 
     # raise error if keys not provided
     if not dictContains(("category", "level", "question", "option1", "option2", "option3", "option4", "answer", "explanation"), content):
