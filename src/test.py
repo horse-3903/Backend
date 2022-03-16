@@ -14,7 +14,10 @@ sample_question_data = {
     "category": "test cat",
     "level": 2,
     "question": "helloworld",
-    "option1": "blah", "option2": "another test", "option3": "this is correct", "option4": "wrong",
+    "option1": "blah",
+    "option2": "another test",
+    "option3": "this is correct",
+    "option4": "wrong",
     "answer": 3,
 }
 
@@ -26,7 +29,8 @@ sample_definition_data = {
 
 # add qn api test
 if mode == QUESTION_ADD_TEST:
-    r = requests.post("http://localhost:5000/api/v1/questions", sample_question_data)
+    r = requests.post("http://localhost:5000/api/v1/questions",
+                      sample_question_data)
     print(r.text)
 
 # get qn api test
@@ -36,5 +40,6 @@ elif mode == QUESTION_GET_TEST:
 
 # add definition api test
 elif mode == DEFINITION_ADD_TEST:
-    r = requests.post("http://localhost:5000/api/v1/definitions", sample_definition_data)
+    r = requests.post(
+        "http://localhost:5000/api/v1/definitions", sample_definition_data)
     print(r.text)

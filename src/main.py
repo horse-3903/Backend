@@ -6,8 +6,10 @@ from extern_funcs import *
 from database_columns import *
 
 # create sqlite connection
-connection = sqlite3.connect("./src/database.db", check_same_thread = False)
-connection.set_trace_callback(None) # debugging, set to print if need to see queries executed, set to None if hide everything
+connection = sqlite3.connect("./src/database.db", check_same_thread=False)
+
+# debugging, set to print if need to see queries executed, set to None if hide everything
+connection.set_trace_callback(None)
 cur = connection.cursor()
 
 # create question bank
@@ -33,15 +35,18 @@ with open("./src/layout.json", "r") as layout_read:
 # Flask app
 app = Flask(__name__)
 
-@app.route("/", methods = ["GET"])
+
+@app.route("/", methods=["GET"])
 def home():
     return "<h1>hello, world!</h1>"
 
-@app.route("/api/v1/layout", methods = ["GET"])
-def layout():
-    return LAYOUT_DATA # Return api layout. Thank me later frontend devs
 
-@app.route("/api/v1/questions", methods = ["GET", "POST"])
+@app.route("/api/v1/layout", methods=["GET"])
+def layout():
+    return LAYOUT_DATA  # Return api layout. Thank me later frontend devs
+
+
+@app.route("/api/v1/questions", methods=["GET", "POST"])
 def questions():
 
     # If the request method is POST, add question; if request method is GET return the number of questions as stated in query string
@@ -51,14 +56,14 @@ def questions():
         content = dict(request.form)
 
         # raise error if lacking data
-        if not dictContains(QUESTION_ADD_COLUMNS, content):
+        if not dict_contains(QUESTION_ADD_COLUMNS, content):
             return "LACKING_DATA"
 
         # order dict
-        orderDict(QUESTION_ADD_COLUMNS, content)
+        order_dict(QUESTION_ADD_COLUMNS, content)
 
         # raise error if datas are of wrong type
-        if not convertDictTypes((str, int, str, str, str, str, str, int, str), content):
+        if not convert_dict_types((str, int, str, str, str, str, str, int, str), content):
             return "WRONG_TYPES"
 
         # insert query
@@ -71,22 +76,22 @@ def questions():
         return "SUCCESS"
 
     elif request.method == "GET":
-        
+
         # Checks if the number of questions passed into the query string is an integer
         # The number of questions returned will correspond to the number of questions
 
         # get query string data
         content = dict(request.args)
-        
+
         # raise error if lacking data
-        if not dictContains(QUESTION_GET_COLUMNS, content):
+        if not dict_contains(QUESTION_GET_COLUMNS, content):
             return "LACKING_DATA"
 
         # order dict
-        orderDict(QUESTION_GET_COLUMNS, content)
-        
+        order_dict(QUESTION_GET_COLUMNS, content)
+
         # raise error if datas are of wrong type
-        if not convertDictTypes((str, int), content):
+        if not convert_dict_types((str, int), content):
             return "WRONG_TYPES"
 
         # insert code here
@@ -95,23 +100,24 @@ def questions():
 
         return "SUCCESS"
 
-@app.route("/api/v1/definitions", methods = ["GET", "POST"])
+
+@app.route("/api/v1/definitions", methods=["GET", "POST"])
 def definitions():
-    
+
     # If request method is POST, add definition; if request method is GET return definition requested
     if request.method == "POST":
-        
+
         # get post data
         content = dict(request.form)
 
         # raise error if lacking data
-        if not dictContains(DEFINITION_ADD_COLUMNS, content):
+        if not dict_contains(DEFINITION_ADD_COLUMNS, content):
             return "LACKING_DATA"
-        
+
         # don't have to convert types, so no type checks here
 
         # order dict
-        orderDict(DEFINITION_ADD_COLUMNS, content)
+        order_dict(DEFINITION_ADD_COLUMNS, content)
 
         # insert query
         safeInsert(cur, "definitions", content)
@@ -123,7 +129,8 @@ def definitions():
         return "SUCCESS"
 
     elif request.method == "GET":
-        ... # add stuff here
+        pass  # add stuff here later
+
 
 if __name__ == "__main__":
     app.run()
