@@ -20,7 +20,7 @@ option1 TEXT NOT NULL, option2 TEXT NOT NULL, option3 TEXT NOT NULL, option4 TEX
 
 # create definition bank
 cur.execute("""
-CREATE TABLE IF NOT EXISTS definitions(keyword TEXT NOT NULL, aliases TEXT NOT NULL, definition TEXT NOT NULL)
+CREATE TABLE IF NOT EXISTS definitions(item TEXT NOT NULL, definition TEXT NOT NULL, aliases TEXT NOT NULL)
 """)
 
 # create userdb

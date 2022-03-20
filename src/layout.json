@@ -25,7 +25,7 @@
   "DEFINITION_ADD": {
     "route": "/api/v1/definitions",
     "method": "POST",
-    "arguments": ["keyword", "aliases", "definition"]
+    "arguments": ["item", "definition", "aliases"]
   },
 
   "DEFINITION_GET": "NOT_IMPLEMENTED"
