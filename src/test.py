@@ -22,7 +22,7 @@ sample_question_data = {
 }
 
 sample_definition_data = {
-    "keyword": "test",
+    "item": "test",
     "definition": "testing",
     "aliases": """["testing", "tests"]""",
 }
