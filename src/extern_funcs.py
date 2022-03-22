@@ -1,3 +1,5 @@
+import json
+
 def dict_contains(keys: tuple, check_dict: dict) -> bool:
     """
     Check if a dictionary contains all of the desired keys.
@@ -15,7 +17,7 @@ def convert_dict_types(types: tuple, res_dict: dict) -> bool:
     for index, key in enumerate(res_dict.keys()):
         try:
             res_dict[key] = types[index](res_dict[key])
-        except (TypeError, ValueError):
+        except (TypeError, ValueError, json.decoder.JSONDecodeError):
             return False
     return True
 

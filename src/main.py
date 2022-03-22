@@ -9,7 +9,7 @@ from database_columns import *
 connection = sqlite3.connect("./src/database.db", check_same_thread=False)
 
 # debugging, set to print if need to see queries executed, set to None if hide everything
-connection.set_trace_callback(None)
+connection.set_trace_callback(print)
 cur = connection.cursor()
 
 # create question bank
@@ -45,7 +45,6 @@ def home():
 def layout():
     return LAYOUT_DATA  # Return api layout. Thank me later frontend devs
 
-
 @app.route("/api/v1/questions", methods=["GET", "POST"])
 def questions():
 
@@ -67,7 +66,7 @@ def questions():
             return "WRONG_TYPES"
 
         # insert query
-        safeInsert(cur, "questions", content)
+        safe_insert(cur, "questions", content)
 
         # commit
         connection.commit()
@@ -120,7 +119,7 @@ def definitions():
         order_dict(DEFINITION_ADD_COLUMNS, content)
 
         # insert query
-        safeInsert(cur, "definitions", content)
+        safe_insert(cur, "definitions", content)
 
         # commit
         connection.commit()
@@ -129,8 +128,27 @@ def definitions():
         return "SUCCESS"
 
     elif request.method == "GET":
-        pass  # add stuff here later
+        
+        # get query string params
+        content = dict(request.args)
 
+        # raise error if lacking data
+        if not dict_contains(DEFINITION_GET_COLUMNS, content):
+            return "LACKING_DATA"
+
+        # don't have to convert types / order dict, so nothing here
+
+        # get all definitions
+        all_definitions = safe_select(cur, "definitions", {"1": 1})
+
+        # find which definitions match
+        for definition in all_definitions:
+            aliases = json.loads(definition[2]) # parse json to list
+            if content["input"] in aliases:
+                return json.dumps({"item": definition[0], "definition": definition[1]}) # return definion
+
+        # wasnt found
+        return "NOT_FOUND"
 
 if __name__ == "__main__":
     app.run()

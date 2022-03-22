@@ -1,32 +1,35 @@
 {
-  "QUESTION_ADD": {
+
+    "QUESTION_ADD": {
     "route": "/api/v1/questions",
     "method": "POST",
     "arguments": [
-      "category",
-      "level",
-      "question",
-      "option1",
-      "option2",
-      "option3",
-      "option4",
-      "answer",
-      "explanation",
-      "id"
+    "category",
+    "level",
+    "question",
+    "option1", "option2", "option3", "option4",
+    "answer",
+    "explanation",
+    "id"
     ]
-  },
+    },
 
-  "QUESTION_GET": {
+    "QUESTION_GET": {
     "route": "/api/v1/questions",
     "method": "GET",
     "arguments": ["mode", "num", "userid"]
-  },
+    },
 
-  "DEFINITION_ADD": {
+    "DEFINITION_ADD": {
     "route": "/api/v1/definitions",
     "method": "POST",
     "arguments": ["item", "definition", "aliases"]
-  },
+    },
 
-  "DEFINITION_GET": "NOT_IMPLEMENTED"
+    "DEFINITION_GET": {
+    "route": "/api/v1/definitions",
+    "method": "GET",
+    "arguments": ["input"]
+    }
+
 }
