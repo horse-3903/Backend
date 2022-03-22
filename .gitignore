@@ -1,5 +1,5 @@
-# ignore database.db file
-/src/*.db
+# ignore database.db file (do this in production)
+# /src/*.db
 
 # ignore pycache folder
 /src/__pycache__
