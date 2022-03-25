@@ -95,8 +95,20 @@ def questions():
 
         # insert code here
         # if mode == all then find num random questions from db
+        if content["mode"] == "all":
+            return cur.execute("""SELECT * FROM questions 
+            ORDER BY RAND() 
+            LIMIT 10 
+            FOR JSON AUTO;""")
+            
         # if mode == undone then find num random questions from db that are not done
-
+        elif content["mode"] == "undone":
+            return cur.execute("""SELECT * FROM questions
+            WHERE (id not in list of undone questions)
+            ORDER BY RAND()
+            LIMIT 10 
+            FOR JSON AUTO;""")
+        
         return "SUCCESS"
 
 
