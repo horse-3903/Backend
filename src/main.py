@@ -148,14 +148,14 @@ def definitions():
         # don't have to convert types / order dict, so nothing here
 
         # get all definitions
-        all_definitions = safe_select(cur, "definitions", {"1": 1} ,False)
+        all_definitions = safe_select(cur, "definitions", {"1 = ?": 1} ,False)
 
         # find which definitions match
         for definition in all_definitions:
-            aliases = json.loads(definition[2]) # parse json to list
+            aliases = json.loads(definition[2]).append(definition[0]) # parse json to list and ensuring item is part of aliases (no need to remove duplicates)
             if content["input"] in aliases:
-                return json.dumps({"item": definition[0], "definition": definition[1]}) # return definion
-
+                return json.dumps({"item": definition[0], "definition": definition[1]}) # return definition
+ 
         # wasnt found
         return "NOT_FOUND"
 
