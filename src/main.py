@@ -1,5 +1,6 @@
 import sqlite3
 import json
+import random
 from flask import Flask, request
 from sql_funcs import *
 from extern_funcs import *
@@ -15,7 +16,7 @@ cur = connection.cursor()
 # create question bank
 cur.execute("""
 CREATE TABLE IF NOT EXISTS questions(category TEXT NOT NULL, level INTEGER NOT NULL, question TEXT NOT NULL,
-option1 TEXT NOT NULL, option2 TEXT NOT NULL, option3 TEXT NOT NULL, option4 TEXT NOT NULL, answer INTEGER NOT NULL, explanation TEXT NOT NULL, id TEXT NOT NULL)
+option1 TEXT NOT NULL, option2 TEXT NOT NULL, option3 TEXT NOT NULL, option4 TEXT NOT NULL, answer INTEGER NOT NULL, explanation TEXT NOT NULL, id TEXT NOT NULL UNIQUE)
 """)
 
 # create definition bank
@@ -25,7 +26,7 @@ CREATE TABLE IF NOT EXISTS definitions(item TEXT NOT NULL, definition TEXT NOT N
 
 # create userdb
 cur.execute("""
-CREATE TABLE IF NOT EXISTS users(userid TEXT NOT NULL, correct_questions TEXT NOT NULL)
+CREATE TABLE IF NOT EXISTS users(userid TEXT NOT NULL UNIQUE, correct_questions TEXT NOT NULL)
 """)
 
 # load layout data
@@ -96,18 +97,14 @@ def questions():
         # insert code here
         # if mode == all then find num random questions from db
         if content["mode"] == "all":
-            return cur.execute("""SELECT * FROM questions 
-            ORDER BY RAND() 
-            LIMIT 10 
-            FOR JSON AUTO;""")
+            data = random.shuffle(safe_select(cur,"questions",{},content["num"]))
+            return to_json(data)
             
-        # if mode == undone then find num random questions from db that are not done
+        # if mode == undone then find num random questions from db that are not in user list of correct questions
         elif content["mode"] == "undone":
-            return cur.execute("""SELECT * FROM questions
-            WHERE (id not in list of undone questions)
-            ORDER BY RAND()
-            LIMIT 10 
-            FOR JSON AUTO;""")
+            questions = safe_select(cur,"users",{"user = ?":content["userid"]}).split(",")
+            data = random.shuffle(safe_select(cur,"questions",{f"id NOT IN {','.join(['?'*len(questions)])}":questions}))
+            return to_json(data)
         
         return "SUCCESS"
 
@@ -151,7 +148,7 @@ def definitions():
         # don't have to convert types / order dict, so nothing here
 
         # get all definitions
-        all_definitions = safe_select(cur, "definitions", {"1": 1})
+        all_definitions = safe_select(cur, "definitions", {"1": 1} ,False)
 
         # find which definitions match
         for definition in all_definitions:

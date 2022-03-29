@@ -31,3 +31,15 @@ def order_dict(keys: tuple, res_dict: dict) -> None:
         new_dict[key] = res_dict[key]
     res_dict.clear()
     res_dict.update(new_dict)
+
+def to_json(keys: tuple, data: list) -> list:
+    """
+    Convert selected data to json format
+    """
+    new_list = []
+    for i in data:
+        new_dict = {}
+        for j in range(len(i)):
+            new_dict[keys[j]] = i[j]
+        new_list.append(new_dict)
+    return json.dumps(new_list)
