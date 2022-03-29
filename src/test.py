@@ -1,6 +1,8 @@
 import requests
 import sqlite3
 from sql_funcs import *
+from extern_funcs import *
+from database_columns import *
 
 # create sqlite connection
 connection = sqlite3.connect("./src/database.db", check_same_thread=False)
@@ -19,9 +21,8 @@ DEFINITION_GET_TEST = 4
 mode = DEFINITION_GET_TEST
 
 # sample data
-sample_question_data = safe_select(cur,"questions",{},10)
-
-sample_definition_data = safe_select(cur,"definitions",{},10)
+sample_question_data = json.loads(to_json(QUESTION_ADD_COLUMNS,safe_select(cur,"questions",{},10)))
+sample_definition_data = json.loads(to_json(DEFINITION_ADD_COLUMNS,safe_select(cur,"definitions",{},10)))
 
 # add qn api test
 if mode == QUESTION_ADD_TEST:
