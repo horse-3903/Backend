@@ -1,4 +1,13 @@
 import requests
+import sqlite3
+from sql_funcs import *
+
+# create sqlite connection
+connection = sqlite3.connect("./src/database.db", check_same_thread=False)
+
+# debugging, set to print if need to see queries executed, set to None if hide everything
+connection.set_trace_callback(print)
+cur = connection.cursor()
 
 # testing modes
 QUESTION_ADD_TEST = 1
@@ -10,20 +19,9 @@ DEFINITION_GET_TEST = 4
 mode = DEFINITION_GET_TEST
 
 # sample data
-sample_question_data = {
-    "explanation": "nothing here",
-    "category": "test cat",
-    "level": 2,
-    "question": "helloworld",
-    "option1": "blah", "option2": "another test", "option3": "this is correct", "option4": "wrong",
-    "answer": 3,
-}
+sample_question_data = safe_select(cur,"questions",{},10)
 
-sample_definition_data = {
-    "item": "test",
-    "definition": "testing",
-    "aliases": """["testing", "tests"]""",
-}
+sample_definition_data = safe_select(cur,"definitions",{},10)
 
 # add qn api test
 if mode == QUESTION_ADD_TEST:
