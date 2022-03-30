@@ -102,7 +102,7 @@ def questions():
             
         # if mode == undone then find num random questions from db that are not in user list of correct questions
         elif content["mode"] == "undone":
-            questions = safe_select(cur,"users",{"user = ?":content["userid"]}).split(",")
+            questions = safe_select(cur,"users",{"user = ?":content["userid"]})[0][1]
             data = random.shuffle(safe_select(cur,"questions",{f"id NOT IN {','.join(['?'*len(questions)])}":questions}))
             return to_json(data)
         
