@@ -91,19 +91,21 @@ def questions():
         order_dict(QUESTION_GET_COLUMNS, content)
 
         # raise error if datas are of wrong type
-        if not convert_dict_types((str, int), content):
+        if not convert_dict_types((str, int, str), content):
             return "WRONG_TYPES"
 
         # insert code here
         # if mode == all then find num random questions from db
         if content["mode"] == "all":
-            data = random.shuffle(safe_select(cur,"questions",{},content["num"]))
+            data = safe_select(cur,"questions",{},content["num"])
+            random.shuffle(data)
             return to_json(data)
             
         # if mode == undone then find num random questions from db that are not in user list of correct questions
         elif content["mode"] == "undone":
             questions = safe_select(cur,"users",{"user = ?":content["userid"]})[0][1]
-            data = random.shuffle(safe_select(cur,"questions",{f"id NOT IN {','.join(['?'*len(questions)])}":questions}))
+            data = safe_select(cur,"questions",{f"id NOT IN {','.join(['?'*len(questions)])}":questions})
+            random.shuffle(data)
             return to_json(data)
         
         return "SUCCESS"
