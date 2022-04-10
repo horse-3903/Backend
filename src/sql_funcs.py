@@ -23,7 +23,7 @@ def safe_select(
     # execute select query
     cursor.execute(
     f"""
-    SELECT * FROM {table} {f"WHERE {' AND '.join(str(i) for i in select_dict)}" if select_dict != {} else ''} LIMIT {num}
+    SELECT * FROM {table} {f"WHERE {' AND '.join(str(i) for i in select_dict)}" if select_dict != {} else ''} {f'LIMIT{num}' if num != 0 else ''}
     """, tuple(select_dict.values())
     )
 

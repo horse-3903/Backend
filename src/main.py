@@ -39,7 +39,7 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
-    return "<h1>hello, world!</h1>"
+    return "<h1>CONNECTION_SUCESS</h1>"
 
 
 @app.route("/api/v1/layout", methods=["GET"])
@@ -103,8 +103,8 @@ def questions():
             
         # if mode == undone then find num random questions from db that are not in user list of correct questions
         elif content["mode"] == "undone":
-            questions = safe_select(cur,"users",{"user = ?":content["userid"]})[0][1]
-            data = safe_select(cur,"questions",{f"id NOT IN {','.join(['?'*len(questions)])}":questions})
+            questions = safe_select(cur,"users",{"user = ?":content["userid"]},0)[0][1]
+            data = safe_select(cur,"questions",{f"id NOT IN {','.join(['?'*len(questions)])}":questions},0)
             random.shuffle(data)
             return to_json(data)
         
@@ -150,16 +150,36 @@ def definitions():
         # don't have to convert types / order dict, so nothing here
 
         # get all definitions
-        all_definitions = safe_select(cur, "definitions", {"1 = ?": 1} ,False)
+        all_definitions = safe_select(cur, "definitions", {},0)
 
         # find which definitions match
-        for definition in all_definitions:
-            aliases = json.loads(definition[2]).append(definition[0]) # parse json to list and ensuring item is part of aliases (no need to remove duplicates)
+        for i in all_definitions:
+            aliases = [j.strip("''") for j in i[2].strip('][').split(',')]
+            aliases.append(i[0]) # parse json to list and ensuring item is part of aliases (no need to remove duplicates)
             if content["input"] in aliases:
-                return json.dumps({"item": definition[0], "definition": definition[1]}) # return definition
+                return to_json(DEFINITION_ADD_COLUMNS,[i]) # return definition
  
         # wasnt found
         return "NOT_FOUND"
 
+@app.route("/api/v1/user", methods=["GET"])
+def users():
+
+  # check if input data is in database when user runs command 
+  content = dict(request.args)
+
+  if not dict_contains(USER_GET_COLUMNS, content):
+    return "LACKING_DATA"
+
+  data = safe_select(cur,"users",{"userid = ?":content["userid"]},0)
+
+  if data == []:
+    content["correct_questions"] = []
+    safe_insert(cur, "users", content)
+    return "<p>USER_FOUND</p>" + to_json(("userid","correct_questions"),safe_select(cur,"users",{"userid = ?":content["userid"]},0))
+
+  else:
+    return "<p>USER_FOUND</p>" + to_json(("userid","correct_questions"),data)
+
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0",port="8080")

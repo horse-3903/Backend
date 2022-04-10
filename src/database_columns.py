@@ -3,3 +3,4 @@ QUESTION_ADD_COLUMNS = ("category", "level", "question", "option1", "option2", "
 QUESTION_GET_COLUMNS = ("mode", "num", "userid")
 DEFINITION_ADD_COLUMNS = ("item", "definition", "aliases")
 DEFINITION_GET_COLUMNS = ("input",)
+USER_GET_COLUMNS = ("userid",)
