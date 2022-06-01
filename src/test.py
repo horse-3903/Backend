@@ -16,31 +16,64 @@ QUESTION_ADD_TEST = 1
 QUESTION_GET_TEST = 2
 DEFINITION_ADD_TEST = 3
 DEFINITION_GET_TEST = 4
+USER_GET_TEST = 5
+CORRECT_QUESTION_ADD_TEST = 6
 
 # current mode (change this)
-mode = DEFINITION_GET_TEST
+mode = USER_GET_TEST
 
 # sample data
-sample_question_data = json.loads(to_json(QUESTION_ADD_COLUMNS,safe_select(cur,"questions",{},10)))
-sample_definition_data = json.loads(to_json(DEFINITION_ADD_COLUMNS,safe_select(cur,"definitions",{},10)))
+sample_question_data = {
+    "explanation": "nothing here",
+    "category": "test cat",
+    "level": 2,
+    "question": "helloworld",
+    "option1": "blah", "option2": "another test", "option3": "this is correct", "option4": "wrong",
+    "id": "test_id",
+    "answer": 3,
+}
+
+sample_definition_data = {
+    "item": "test",
+    "definition": "testing",
+    "aliases": """["testing", "tests"]""",
+}
+
+sample_correct_question_data = {
+    "userid": "test userid",
+    "questionid": "T001",
+}
 
 # add qn api test
 if mode == QUESTION_ADD_TEST:
-    r = requests.post("http://localhost:5000/api/v1/questions",
+    r = requests.post("http://localhost:8080/api/v1/questions",
                       sample_question_data)
     print(r.text)
 
 # get qn api test
 elif mode == QUESTION_GET_TEST:
-    r = requests.get("http://localhost:5000/api/v1/questions?mode=all&num=10")
+    r = requests.get("http://localhost:8080/api/v1/questions?mode=undone&num=1&userid=test%20userid")
     print(r.text)
 
 # add definition api test
 elif mode == DEFINITION_ADD_TEST:
     r = requests.post(
-        "http://localhost:5000/api/v1/definitions", sample_definition_data)
+        "http://localhost:8080/api/v1/definitions", sample_definition_data)
     print(r.text)
 
 elif mode == DEFINITION_GET_TEST:
-    r = requests.get("http://localhost:5000/api/v1/definitions?input=tests")
+    r = requests.get("http://localhost:8080/api/v1/definitions?input=tests")
+    print(r.text)
+
+elif mode == CORRECT_QUESTION_ADD_TEST:
+    r = requests.post(
+        "http://localhost:8080/api/v1/add_correct_question",
+        sample_correct_question_data
+    )
+    print(r.text)
+
+elif mode == USER_GET_TEST:
+    r = requests.get(
+        "http://localhost:8080/api/v1/user?userid=test%20userid"
+    )
     print(r.text)

@@ -36,10 +36,4 @@ def to_json(keys: tuple, data: list) -> list:
     """
     Convert selected data to json format
     """
-    new_list = []
-    for i in data:
-        new_dict = {}
-        for j in range(len(i)):
-            new_dict[keys[j]] = i[j]
-        new_list.append(new_dict)
-    return json.dumps(new_list)
+    return json.dumps(dict(zip(keys, data)))
