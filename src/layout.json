@@ -1,35 +1,47 @@
 {
 
     "QUESTION_ADD": {
-    "route": "/api/v1/questions",
-    "method": "POST",
-    "arguments": [
-    "category",
-    "level",
-    "question",
-    "option1", "option2", "option3", "option4",
-    "answer",
-    "explanation",
-    "id"
-    ]
+        "route": "/api/v1/questions",
+        "method": "POST",
+        "arguments": [
+            "category",
+            "level",
+            "question",
+            "option1", "option2", "option3", "option4",
+            "answer",
+            "explanation",
+            "id"
+        ]
     },
 
     "QUESTION_GET": {
-    "route": "/api/v1/questions",
-    "method": "GET",
-    "arguments": ["mode", "num", "userid"]
+        "route": "/api/v1/questions",
+        "method": "GET",
+        "arguments": ["mode", "num", "userid"]
     },
 
     "DEFINITION_ADD": {
-    "route": "/api/v1/definitions",
-    "method": "POST",
-    "arguments": ["item", "definition", "aliases"]
+        "route": "/api/v1/definitions",
+        "method": "POST",
+        "arguments": ["item", "definition", "aliases"]
     },
 
     "DEFINITION_GET": {
-    "route": "/api/v1/definitions",
-    "method": "GET",
-    "arguments": ["input"]
+        "route": "/api/v1/definitions",
+        "method": "GET",
+        "arguments": ["input"]
+    },
+
+    "USER_GET": {
+        "route": "/api/v1/user",
+        "method": "GET",
+        "arguments": ["userid"]
+    },
+
+    "CORRECT_QUESTION_ADD": {
+        "route": "/api/v1/add_correct_question",
+        "method": "POST",
+        "arguments": ["userid", "questionid"]
     }
 
 }

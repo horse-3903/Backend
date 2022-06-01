@@ -13,21 +13,39 @@ def safe_insert(
     VALUES ({', '.join("?" for itm in data_dict)});
     """, tuple(data_dict.values()))
 
+# ctx expr just a hacky way to do things. might want to stop using funcs for this...
 def safe_select(
     cursor: sqlite3.Cursor,
     table: str,
     select_dict: dict,
-    num: int
+    num: int,
+    ctx_expr: str = "tuple(select_dict.values())"
 ) -> list:
 
     # execute select query
     cursor.execute(
     f"""
-    SELECT * FROM {table} {f"WHERE {' AND '.join(str(i) for i in select_dict)}" if select_dict != {} else ''} {f'LIMIT{num}' if num != 0 else ''}
-    """, tuple(select_dict.values())
+    SELECT * FROM {table} {f"WHERE {' AND '.join(str(i) for i in select_dict)}" if select_dict != {} else ''} LIMIT {num}
+    """, eval(ctx_expr)
     )
 
     # get rows
     rows = cursor.fetchall()
 
     return rows
+
+def safe_update(
+    cursor: sqlite3.Cursor,
+    table: str,
+    update_dict: dict,
+    condition_dict: dict
+):
+
+    # execute update query
+    cursor.execute(
+    f"""
+    UPDATE {table}
+    SET {" AND ".join(update_dict.keys())}
+    WHERE {" AND ".join(condition_dict.keys())}
+    """, tuple(update_dict.values()) + tuple(condition_dict.values())
+    )
